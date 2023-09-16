@@ -45,6 +45,8 @@ def main():
     clean_open_orders()
     # get ticker
     ticker = input('Write the ticker you want to operate with: ')
+
+    trader = Trader(ticker)
     # run trading bot
 
 if __name__ == '__main__':
