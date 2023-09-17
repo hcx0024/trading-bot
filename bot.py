@@ -4,28 +4,31 @@
 from traderlib import *
 from logger import *
 import sys
-
+from alpaca_trade_api.rest import tradeapi
 import gvars
 
 # check out our trading account (blocked? total amount?)
-def check_account_ok():
+def check_account_ok(api):
     try:
-        #get account INFO
+        account = api.get_account()
+        if account.status != 'ACTIVE':
+            lg.error('Accout is not ACTIVE, aborting')
+            sys.exit()
     except Exception as e:
-        lg.error('ERROR #1: Couldn't get account info)
+        lg.error('ERROR #1: Couldnt get account info')
         lg.info(str(e))
         sys.exit()
 # close current orders (double check)
-def clean_open_orders():
-    # get list of open orders
-    lg.info('List of open orders')
-    lg.info(str(open_orders))
+def clean_open_orders(api):
 
-    for order in open_orders:
-        # close orders
-        lg.info('Order %s closed' % str(order.id))
+    try:
+        api.cancel_all_orders()
+        lg.info('All order cancelled')
+    except Exception as e:
+        lg.error('Could not cancel all orders')
+        lg.info(str(e))
+        sys.exit()
 
-    lg.info('Closing orders complete')
 
 # define asset
 def get_ticker():
@@ -36,13 +39,14 @@ def get_ticker():
 
 # excute trading bot
 def main():
+    api = tradeapi.REST(gvars.API_KEY, gvars.API_SECRET_KEY, gvars.API_URL)
 
     # initialize the logger (imported from logger.py)
     initialize_logger()
     # check trading account
-    check_account_ok()
+    check_account_ok(api)
     # close current account
-    clean_open_orders()
+    clean_open_orders(api)
     # get ticker
     ticker = input('Write the ticker you want to operate with: ')
 
