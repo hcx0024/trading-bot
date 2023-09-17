@@ -52,7 +52,7 @@ def main():
 
     trader = Trader(ticker)
     # run trading bot
-    tradingSuccess = trader.run()
+    tradingSuccess = trader.run(ticker)
 
     if not tradingSuccess:
         lg.info('Trading was not successful, locking asset')

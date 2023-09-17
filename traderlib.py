@@ -1,9 +1,11 @@
 # encoding: utf-8
+#import alpaca_trade_api as tradeapi
 import sys
 import tulipy as ti
 import pandas as pd
 from datetime import datetime
 from math import ceil
+from logger import *
 
 
 class Trader:
@@ -126,7 +128,7 @@ class Trader:
 
             try:
                 # define max to spend
-                
+
 
                 # get the total equity available
                 # totalEquity = ask Alpaca API for available equity
@@ -415,7 +417,7 @@ class Trader:
 
 
 
-    def run(self):
+    def run(self,ticker):
 
         # LOOP until timeout reached (ex. 2h)
 
