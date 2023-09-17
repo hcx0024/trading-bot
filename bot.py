@@ -5,7 +5,7 @@ from traderlib import *
 from logger import *
 import sys
 
-
+import gvars
 
 # check out our trading account (blocked? total amount?)
 def check_account_ok():
@@ -37,7 +37,7 @@ def get_ticker():
 # excute trading bot
 def main():
 
-    # initialize the logger
+    # initialize the logger (imported from logger.py)
     initialize_logger()
     # check trading account
     check_account_ok()
@@ -48,6 +48,11 @@ def main():
 
     trader = Trader(ticker)
     # run trading bot
+    tradingSuccess = trader.run()
+
+    if not tradingSuccess:
+        lg.info('Trading was not successful, locking asset')
+        #wait 15mins
 
 if __name__ == '__main__':
     main()
